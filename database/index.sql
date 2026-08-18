@@ -1,5 +1,5 @@
-CREATE DATABASE restauranteramonrebeca;
-USE restauranteramonrebeca;
+CREATE DATABASE restaurante;
+USE restaurante;
 
 CREATE TABLE pratos (
     id INT AUTO_INCREMENT PRIMARY KEY,
