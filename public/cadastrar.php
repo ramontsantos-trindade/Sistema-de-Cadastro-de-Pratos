@@ -11,20 +11,25 @@ try {
     die("Erro na conexão: " . $e->getMessage());
 }
 
-require 'conexao.php';
-
-$nome = trim($_POST['nome'] ?? '');
+// Recebe e limpa as entradas
+$nome  = trim($_POST['nome'] ?? '');
 $email = trim($_POST['email'] ?? '');
 
-// RNF1 — Validação de Campos
-if (!empty($nome) && !empty($email)) {
-    $sql = "INSERT INTO usuarios (nome, email) VALUES (:nome, :email)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':nome' => $nome,
-        ':email' => $email
-    ]);
+// Validação dos campos
+if (!empty($nome) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    try {
+        $sql  = "INSERT INTO usuarios (nome, email) VALUES (:nome, :email)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':nome'  => $nome,
+            ':email' => $email
+        ]);
+
+        echo "Usuário cadastrado com sucesso!";
+    } catch (PDOException $e) {
+        echo "Erro ao cadastrar: " . $e->getMessage();
+    }
+} else {
+    echo "Por favor, preencha o nome e um e-mail válido.";
 }
-
-
 ?>
