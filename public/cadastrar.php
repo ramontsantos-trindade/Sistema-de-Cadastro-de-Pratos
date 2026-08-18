@@ -1,33 +1,51 @@
+
+
 <?php
+// 1. Inclui o arquivo de conexão voltando uma pasta (../)
 require_once __DIR__ . '/../infra/conexao.php';
 
+// 2. Verifica se o formulário foi enviado via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome  = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
+    
+    // Captura e limpa os campos enviados pelo formulário
+    $nome = trim($_POST['nome'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+    $preco = floatval($_POST['preco'] ?? 0);
+    $categoria = trim($_POST['categoria'] ?? '');
 
-    // RNF1 — Validação dos Campos
-    if (!empty($nome) && !empty($email)) {
-        // RNF2 — Prepared Statements
-        $stmt = mysqli_prepare($conexao, "INSERT INTO usuarios (nome, email) VALUES (?, ?)");
-        mysqli_stmt_bind_param($stmt, "ss", $nome, $email);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+    // 3. Valida se os campos obrigatórios foram preenchidos
+    if (!empty($nome) && $preco > 0 && !empty($categoria)) {
 
-        header("Location: index.php");
-        exit;
+        // Prepara a instrução SQL para inserir o prato
+        $sql = "INSERT INTO prato (nome, descricao, preco, categoria) VALUES (?, ?, ?, ?)";
+        $stmt = $conexao->prepare($sql);
+
+        if ($stmt) {
+            // "ssds" -> string, string, double/decimal, string
+            $stmt->bind_param("ssds", $nome, $descricao, $preco, $categoria);
+
+            if ($stmt->execute()) {
+                // Sucesso: Redireciona de volta para a página principal (index.php)
+                header("Location: ../index.php");
+                exit();
+            } else {
+                echo "Erro ao salvar no banco de dados: " . $stmt->error;
+            }
+
+            $stmt->close();
+        } else {
+            echo "Erro ao preparar a consulta: " . $conexao->error;
+        }
+
+    } else {
+        echo "Por favor, preencha todos os campos obrigatórios corretamente.";
     }
-}
-?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head><title>Cadastrar Usuário</title></head>
-<body>
-    <h2>Cadastrar Colaborador</h2>
-    <form method="POST">
-        <input type="text" name="nome" placeholder="Nome" required><br><br>
-        <input type="email" name="email" placeholder="E-mail" required><br><br>
-        <button type="submit">Salvar</button>
-    </form>
-</body>
-</html>
+} else {
+    // Caso alguém tente acessar o arquivo diretamente pelo navegador
+    header("Location: ../index.php");
+    exit();
+}
+
+$conexao->close();
+?>
