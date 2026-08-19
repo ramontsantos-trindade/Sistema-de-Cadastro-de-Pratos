@@ -1,11 +1,11 @@
 CREATE DATABASE restaurante;
 USE restaurante;
 
-Create TABLE usuarios (
+CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
-    email VARCHAR(200) NOT NULL UNIQUE,
-);
+    email VARCHAR(200) NOT NULL UNIQUE
+); 
 
 CREATE TABLE pratos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,3 +17,10 @@ CREATE TABLE pratos (
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE prato (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL
+);
+SELECT * FROM `pratos` WHERE 1
