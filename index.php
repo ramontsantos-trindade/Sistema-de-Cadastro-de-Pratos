@@ -14,16 +14,15 @@ if (!$resultado) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Pratos</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <header>
         <h1>Sistema do Restaurante</h1>
         
         <nav>
-            <a href="index.php">Pratos</a> | 
-            <a href="public/cadastrar_usuario.php">Usuários</a>
+            <a href="index.php">Pratos</a>  
+            <a href="cadastrar_usuario.php">Usuários</a>
         </nav>
     </header>
 
@@ -31,22 +30,26 @@ if (!$resultado) {
         <section>
             <h2>Adicione um novo prato!</h2>
 
-            <form action="public/cadastrar.php" method="POST">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-                <br>
+            <form action="cadastrar.php" method="POST">
+                <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
 
-                <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" required>
-                <br>
+                <div>
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao" required>
+                </div>
 
-                <label for="preco">Preço:</label>
-                <input type="number" id="preco" name="preco" step="0.01" min="0" required>
-                <br>
+                <div>
+                    <label for="preco">Preço:</label>
+                    <input type="number" id="preco" name="preco" step="0.01" min="0" required>
+                </div>
 
-                <label for="categoria">Categoria:</label>
-                <input type="text" id="categoria" name="categoria" required>
-                <br>
+                <div>
+                    <label for="categoria">Categoria:</label>
+                    <input type="text" id="categoria" name="categoria" required>
+                </div>
 
                 <button type="submit">Cadastrar</button>
             </form>
@@ -55,7 +58,7 @@ if (!$resultado) {
         <section>
             <h2>Pratos cadastrados</h2>
 
-            <table border="1">
+            <table>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -76,8 +79,8 @@ if (!$resultado) {
                                 <td>R$ <?= number_format($prato["preco"], 2, ",", ".") ?></td>
                                 <td><?= htmlspecialchars($prato["categoria"]) ?></td>
                                 <td>
-                                    <a href="public/editar.php?id=<?= $prato["id"] ?>">Editar</a> | 
-                                    <a href="public/excluir.php?id=<?= $prato["id"] ?>" onclick="return confirm('Tem certeza que deseja excluir este prato?')">Excluir</a>
+                                    <a href="editar.php?id=<?= $prato["id"] ?>">Editar</a> | 
+                                    <a href="excluir.php?id=<?= $prato["id"] ?>" onclick="return confirm('Tem certeza que deseja excluir este prato?')">Excluir</a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>

@@ -1,5 +1,8 @@
 
-body{
+head {
     backgroundcolor: #ff0000;
-    display: flex
+    display: flex;
+}
+body {
+    background-color: rgb(179, 55, 55);
 }
